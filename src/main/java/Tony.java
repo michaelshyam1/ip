@@ -41,9 +41,41 @@ public class Tony {
                 System.out.println("       OK, I've marked this task as not done yet:" );
                 System.out.println("          " + tasks[taskNumber]);
                 System.out.println("    ____________________________________________________________");
-            }
-            else {
-                tasks[taskCount] = new Task(line);
+            } else if (line.startsWith("todo ")) {
+                String description = line.substring(5);
+                tasks[taskCount] = new Todo(description);
+                taskCount++;
+                System.out.println("       Got it. I've added this task:");
+                System.out.println("          " + tasks[taskCount - 1]);
+                System.out.println("    Now you have " + taskCount + " tasks in the list");
+                System.out.println("    ____________________________________________________________");
+            } else if (line.startsWith("deadline ")) {
+                String[] parts = line.substring(9).split(" /by ");
+                String description = parts[0];
+                String by = parts[1];
+                tasks[taskCount] = new Deadline(description, by);
+                taskCount++;
+                System.out.println("       Got it. I've added this task:");
+                System.out.println("          " + tasks[taskCount - 1]);
+                System.out.println("    Now you have " + taskCount + " tasks in the list");
+                System.out.println("    ____________________________________________________________");
+            }  else if (line.startsWith("event ")) {
+                String content = line.substring(6);
+                String[] firstSplit = content.split(" /from ");
+                String description = firstSplit[0];
+                String[] secondSplit = firstSplit[1].split(" /to ");
+                String from = secondSplit[0];
+                String to = secondSplit[1];
+
+                tasks[taskCount] = new Event(description, from, to);
+                taskCount++;
+                System.out.println("       Got it. I've added this task:");
+                System.out.println("          " + tasks[taskCount - 1]);
+                System.out.println("    Now you have " + taskCount + " tasks in the list");
+                System.out.println("    ____________________________________________________________");
+
+            }else {
+                tasks[taskCount] = new Todo(line);
                 taskCount++;
                 System.out.println("     added:" + line);
                 System.out.println("    ____________________________________________________________");
