@@ -62,3 +62,8 @@ class Event extends Task {
     }
 }
 
+class TonyException extends RuntimeException {
+    public TonyException(String message) {
+        super(message);
+    }
+}
