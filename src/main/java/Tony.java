@@ -94,8 +94,28 @@ public class Tony {
                     System.out.println("    Now you have " + taskCount + " tasks in the list");
                     System.out.println("    ____________________________________________________________");
                     break;
+                case "delete":
+                    if (line.trim().equals("delete")) {
+                        throw new TonyException("OOPS!!! Please specify which task to delete. Use: delete TASK_NUMBER");
+                    }
+                    int deleteNumber = Integer.parseInt(line.substring(7)) - 1;
+                    if (deleteNumber < 0 || deleteNumber >= taskCount) {
+                        throw new TonyException("OOPS!!! Task number is out of range!");
+                    }
+                    Task deletedTask = tasks[deleteNumber];
+                    // Shift all tasks after the deleted one forward
+                    for (int i = deleteNumber; i < taskCount - 1; i++) {
+                        tasks[i] = tasks[i + 1];
+                    }
+                    tasks[taskCount - 1] = null;
+                    taskCount--;
+                    System.out.println("       Noted. I've removed this task:");
+                    System.out.println("          " + deletedTask);
+                    System.out.println("    Now you have " + taskCount + " tasks in the list.");
+                    System.out.println("    ____________________________________________________________");
+                    break;
                 default:
-                    throw new TonyException("      ⚠️ Invalid command! ");
+                    throw new TonyException("      ⚠ Invalid command! ");
                 }
             } catch(TonyException e) {
                 System.out.println("      " + e.getMessage());
