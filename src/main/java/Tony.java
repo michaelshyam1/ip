@@ -2,10 +2,15 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Tony {
+    private static ArrayList<Task> tasks = new ArrayList<>();
+    private static Storage storage = new Storage("./data/duke.txt");
+
     public static void main(String[] args) {
         String line;
         Scanner in = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
+
+        // Load tasks from file at startup
+        tasks = storage.loadTasks();
 
         System.out.println("    ____________________________________________________________");
         System.out.println("     Hello! I'm Tony");
@@ -24,7 +29,6 @@ public class Tony {
                     System.out.println("    ____________________________________________________________");
                     return;
                 case "list":
-                    //Display all tasks in order
                     System.out.println("    Here are the tasks in your list:");
                     for (int i = 0; i < tasks.size(); i++) {
                         System.out.println("      " + (i + 1) + "." + tasks.get(i));
@@ -32,24 +36,22 @@ public class Tony {
                     System.out.println("    ____________________________________________________________");
                     break;
                 case "mark":
-                    //mark task as done
                     int markNumber = Integer.parseInt(line.substring(5)) - 1;
                     tasks.get(markNumber).markAsDone();
                     System.out.println("       Nice! I've marked this task as done:");
                     System.out.println("          " + tasks.get(markNumber));
                     System.out.println("    ____________________________________________________________");
+                    storage.saveTasks(tasks);
                     break;
                 case "unmark":
-                    //mark task as undone
                     int unmarkNumber = Integer.parseInt(line.substring(7)) - 1;
                     tasks.get(unmarkNumber).markAsNotDone();
                     System.out.println("       OK, I've marked this task as not done yet:");
                     System.out.println("          " + tasks.get(unmarkNumber));
                     System.out.println("    ____________________________________________________________");
+                    storage.saveTasks(tasks);
                     break;
-
                 case "todo":
-                    //handle error
                     if (line.trim().equals("todo")) {
                         throw new TonyException("       AHHHH ~ todo cannot be empty!!");
                     }
@@ -59,6 +61,7 @@ public class Tony {
                     System.out.println("          " + tasks.get(tasks.size() - 1));
                     System.out.println("    Now you have " + tasks.size() + " tasks in the list");
                     System.out.println("    ____________________________________________________________");
+                    storage.saveTasks(tasks);
                     break;
                 case "deadline":
                     if (line.trim().equals("deadline")) {
@@ -72,9 +75,9 @@ public class Tony {
                     System.out.println("          " + tasks.get(tasks.size() - 1));
                     System.out.println("    Now you have " + tasks.size() + " tasks in the list");
                     System.out.println("    ____________________________________________________________");
+                    storage.saveTasks(tasks);
                     break;
                 case "event":
-                    //handle error
                     if (line.trim().equals("event")) {
                         throw new TonyException("       AHHHH ~ event cannot be empty!!");
                     }
@@ -90,6 +93,7 @@ public class Tony {
                     System.out.println("          " + tasks.get(tasks.size() - 1));
                     System.out.println("    Now you have " + tasks.size() + " tasks in the list");
                     System.out.println("    ____________________________________________________________");
+                    storage.saveTasks(tasks);
                     break;
                 case "delete":
                     if (line.trim().equals("delete")) {
@@ -104,6 +108,7 @@ public class Tony {
                     System.out.println("          " + deletedTask);
                     System.out.println("    Now you have " + tasks.size() + " tasks in the list.");
                     System.out.println("    ____________________________________________________________");
+                    storage.saveTasks(tasks);
                     break;
                 default:
                     throw new TonyException("      ⚠ Invalid command! ");
@@ -112,7 +117,6 @@ public class Tony {
                 System.out.println("      " + e.getMessage());
                 System.out.println("    ____________________________________________________________");
             }
-
         }
     }
 }
