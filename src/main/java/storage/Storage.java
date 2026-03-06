@@ -1,3 +1,10 @@
+package storage;
+
+import task.Deadline;
+import task.Event;
+import task.Task;
+import task.Todo;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -6,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
-    private String filePath;
+    private final String filePath;
 
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -52,19 +59,17 @@ public class Storage {
 
     private String taskToFileFormat(Task task) {
         String type;
-        String isDone = task.isDone ? "1" : "0";
-        String details = task.description;
+        String isDone = task.isDone() ? "1" : "0";
+        String details = task.getDescription();
 
         if (task instanceof Todo) {
             type = "T";
-        } else if (task instanceof Deadline) {
+        } else if (task instanceof Deadline d) {
             type = "D";
-            Deadline d = (Deadline) task;
-            details = task.description + " | " + d.by;
-        } else if (task instanceof Event) {
+            details = task.getDescription() + " | " + d.getBy();
+        } else if (task instanceof Event e) {
             type = "E";
-            Event e = (Event) task;
-            details = task.description + " | " + e.from + " | " + e.to;
+            details = task.getDescription() + " | " + e.getFrom() + " | " + e.getTo();
         } else {
             type = "T";
         }
@@ -78,19 +83,12 @@ public class Storage {
             String type = parts[0];
             boolean isDone = parts[1].equals("1");
 
-            Task task = null;
-
-            switch (type) {
-            case "T":
-                task = new Todo(parts[2]);
-                break;
-            case "D":
-                task = new Deadline(parts[2], parts[3]);
-                break;
-            case "E":
-                task = new Event(parts[2], parts[3], parts[4]);
-                break;
-            }
+            Task task = switch (type) {
+                case "T" -> new Todo(parts[2]);
+                case "D" -> new Deadline(parts[2], parts[3]);
+                case "E" -> new Event(parts[2], parts[3], parts[4]);
+                default -> null;
+            };
 
             if (task != null && isDone) {
                 task.markAsDone();
