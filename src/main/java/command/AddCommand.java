@@ -43,6 +43,7 @@ public class AddCommand extends Command {
                 throw new TonyException("Invalid format! Use: deadline DESCRIPTION /by dd-MM-yyyy HHmm");
             }
 
+            //date and time implemented
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm");
                 LocalDateTime deadline = LocalDateTime.parse(deadlineParts[1].trim(), formatter);
