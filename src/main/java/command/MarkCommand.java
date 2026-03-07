@@ -28,7 +28,7 @@ public class MarkCommand extends Command {
             }
 
             ui.showTaskMarked(task, markAsDone);
-            storage.saveTasks(tasks.getTasks());
+            storage.saveTasks(tasks.tasks());
         } catch (NumberFormatException | IndexOutOfBoundsException e) {
             throw new TonyException("Please provide a valid task number!");
         }

@@ -27,7 +27,7 @@ public class DeleteCommand extends Command {
 
             Task deletedTask = tasks.remove(index);
             ui.showTaskDeleted(deletedTask, tasks.size());
-            storage.saveTasks(tasks.getTasks());
+            storage.saveTasks(tasks.tasks());
         } catch (NumberFormatException e) {
             throw new TonyException("Please provide a valid task number!");
         }

@@ -2,15 +2,9 @@ package task;
 
 import java.util.ArrayList;
 
-public class TaskList {
-    private final ArrayList<Task> tasks;
-
+public record TaskList(ArrayList<Task> tasks) {
     public TaskList() {
-        this.tasks = new ArrayList<>();
-    }
-
-    public TaskList(ArrayList<Task> tasks) {
-        this.tasks = tasks;
+        this(new ArrayList<>());
     }
 
     public void add(Task task) {
@@ -27,6 +21,17 @@ public class TaskList {
 
     public int size() {
         return tasks.size();
+    }
+
+    public TaskList find(String keyword) {
+        TaskList result = new TaskList();
+
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                result.add(task);
+            }
+        }
+        return result;
     }
 
     public ArrayList<Task> getTasks() {

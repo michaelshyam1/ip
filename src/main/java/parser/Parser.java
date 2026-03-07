@@ -1,7 +1,13 @@
 package parser;
 
-import command.*;
+import command.AddCommand;
+import command.Command;
+import command.DeleteCommand;
+import command.ExitCommand;
+import command.ListCommand;
+import command.MarkCommand;
 import exception.TonyException;
+import command.FindCommand;
 
 public class Parser {
 
@@ -19,6 +25,7 @@ public class Parser {
             case "deadline" -> new AddCommand("deadline", arguments);
             case "event" -> new AddCommand("event", arguments);
             case "delete" -> new DeleteCommand(arguments);
+            case "find" -> new FindCommand(arguments);
             default -> throw new TonyException("⚠ Invalid command!");
         };
     }

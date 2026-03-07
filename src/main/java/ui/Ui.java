@@ -69,4 +69,21 @@ public class Ui {
         System.out.print("     > ");
         return scanner.nextLine();
     }
+
+    public void showMatchingTasks(TaskList matchingTasks) {
+        showLine();
+        System.out.println("     Here are the matching tasks in your list:");
+
+        int i = 1;
+        for (Task task : matchingTasks.getTasks()) {
+            System.out.println("     " + i + ". " + task);
+            i++;
+        }
+
+        if (i == 1) {
+            System.out.println("     No matching tasks found.");
+        }
+
+        showLine();
+    }
 }

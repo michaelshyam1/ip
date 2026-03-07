@@ -30,7 +30,7 @@ public class AddCommand extends Command {
         Task task = createTask();
         tasks.add(task);
         ui.showTaskAdded(task, tasks.size());
-        storage.saveTasks(tasks.getTasks());
+        storage.saveTasks(tasks.tasks());
     }
 
     private Task createTask() throws TonyException {
