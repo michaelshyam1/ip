@@ -2,11 +2,10 @@ package ui;
 
 import task.Task;
 import task.TaskList;
-
 import java.util.Scanner;
 
 public class Ui {
-    private Scanner scanner;
+    private final Scanner scanner;
     private static final String DIVIDER = "    ____________________________________________________________";
 
     public Ui() {
@@ -67,6 +66,7 @@ public class Ui {
     }
 
     public String readCommand() {
+        System.out.print("     > ");
         return scanner.nextLine();
     }
 }

@@ -4,13 +4,13 @@ import task.Deadline;
 import task.Event;
 import task.Task;
 import task.Todo;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDateTime;
 
 public class Storage {
     private final String filePath;
@@ -85,7 +85,7 @@ public class Storage {
 
             Task task = switch (type) {
                 case "T" -> new Todo(parts[2]);
-                case "D" -> new Deadline(parts[2], parts[3]);
+                case "D" -> new Deadline(parts[2], LocalDateTime.parse(parts[3]));
                 case "E" -> new Event(parts[2], parts[3], parts[4]);
                 default -> null;
             };

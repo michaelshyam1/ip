@@ -8,6 +8,9 @@ import task.Task;
 import task.TaskList;
 import task.Todo;
 import ui.Ui;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class AddCommand extends Command {
     private final String taskType;
@@ -35,11 +38,18 @@ public class AddCommand extends Command {
         case "todo":
             return new Todo(arguments);
         case "deadline":
-            String[] deadlineParts = arguments.split(" /by ");
-            if (deadlineParts.length < 2) {
-                throw new TonyException("Invalid format! Use: deadline DESCRIPTION /by TIME");
+            String[] deadlineParts = arguments.split(" /by ", 2);
+            if (deadlineParts.length < 2 || deadlineParts[0].trim().isEmpty() || deadlineParts[1].trim().isEmpty()) {
+                throw new TonyException("Invalid format! Use: deadline DESCRIPTION /by dd-MM-yyyy HHmm");
             }
-            return new Deadline(deadlineParts[0], deadlineParts[1]);
+
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HHmm");
+                LocalDateTime deadline = LocalDateTime.parse(deadlineParts[1].trim(), formatter);
+                return new Deadline(deadlineParts[0].trim(), deadline);
+            } catch(DateTimeParseException e) {
+                throw new TonyException("Invalid date/time format! Please enter dd-mm-yyyy HHmm (eg. 17-10-2003 1800");
+            }
         case "event":
             String[] firstSplit = arguments.split(" /from ");
             if (firstSplit.length < 2) {
