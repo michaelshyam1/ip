@@ -12,13 +12,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.LocalDateTime;
 
+/**
+ * Handles loading tasks from and saving tasks to the storage file.
+ */
 public class Storage {
     private final String filePath;
 
+    /**
+     * Creates a Storage object that uses the specified file path.
+     *
+     * @param filePath path to the storage file
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Saves the given list of tasks to the storage file.
+     *
+     * @param tasks list of tasks to save
+     */
     public void saveTasks(ArrayList<Task> tasks) {
         try {
             File file = new File(filePath);
@@ -34,6 +47,11 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads tasks from the storage file.
+     *
+     * @return a list of tasks loaded from storage
+     */
     public ArrayList<Task> loadTasks() {
         ArrayList<Task> tasks = new ArrayList<>();
         try {
@@ -57,6 +75,12 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Converts a task into the format used for file storage.
+     *
+     * @param task task to convert
+     * @return formatted string representation of the task
+     */
     private String taskToFileFormat(Task task) {
         String type;
         String isDone = task.isDone() ? "1" : "0";
@@ -71,12 +95,18 @@ public class Storage {
             type = "E";
             details = task.getDescription() + " | " + e.getFrom() + " | " + e.getTo();
         } else {
-            type = "T";
+            throw new IllegalArgumentException("Unknown task type");
         }
 
         return type + " | " + isDone + " | " + details;
     }
 
+    /**
+     * Parses a line from the storage file into a Task object.
+     *
+     * @param line line read from the storage file
+     * @return the parsed task, or null if parsing fails
+     */
     private Task parseTaskFromFile(String line) {
         try {
             String[] parts = line.split(" \\| ");

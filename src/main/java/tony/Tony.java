@@ -7,11 +7,18 @@ import storage.Storage;
 import task.TaskList;
 import ui.Ui;
 
+/**
+ *This is the main entry point for Tony
+ */
 public class Tony {
     private final Storage storage;
     private TaskList tasks;
     private final Ui ui;
 
+    /**
+     * Creates a Tony application using the given file path for storage
+     * @param filePath path to the storage file
+     */
     public Tony(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -23,6 +30,9 @@ public class Tony {
         }
     }
 
+    /**
+     * Runs the main program until the user exits by typing "bye"
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
@@ -40,6 +50,10 @@ public class Tony {
         }
     }
 
+    /**
+     * starts Tony
+     * @param args tasks written by the user
+     */
     public static void main(String[] args) {
         new Tony("./data/duke.txt").run();
     }
