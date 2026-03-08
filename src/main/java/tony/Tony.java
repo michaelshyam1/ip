@@ -55,6 +55,6 @@ public class Tony {
      * @param args tasks written by the user
      */
     public static void main(String[] args) {
-        new Tony("./data/duke.txt").run();
+        new Tony("./data/Tony.txt").run();
     }
 }
