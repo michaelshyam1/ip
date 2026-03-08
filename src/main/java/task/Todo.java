@@ -1,7 +1,15 @@
 package task;
 
+/**
+ * Represents a todo task
+ */
 public class Todo extends Task{
-        public Todo(String description) {
+    /**
+     * Creates a todo task with the description
+     *
+      * @param description description of the task
+     */
+    public Todo(String description) {
             super(description);
         }
 

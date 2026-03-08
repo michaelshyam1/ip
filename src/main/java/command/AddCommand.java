@@ -12,15 +12,33 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents a command that adds a new task to the task list
+ */
 public class AddCommand extends Command {
     private final String taskType;
     private final String arguments;
 
+    /**
+     * Creates an AddCommand with the specified task type and arguments.
+     *
+     * @param taskType type of task to add
+     * @param arguments user input associated with the task
+     */
     public AddCommand(String taskType, String arguments) {
         this.taskType = taskType;
         this.arguments = arguments;
     }
 
+    /**
+     * Executes the add command by creating a task, adding it to the task list,
+     * showing the success message, and saving the updated list.
+     *
+     * @param tasks the current task list
+     * @param ui the user interface
+     * @param storage the storage handler
+     * @throws TonyException if the task input is invalid
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws TonyException {
         if (arguments.trim().isEmpty()) {
@@ -30,9 +48,15 @@ public class AddCommand extends Command {
         Task task = createTask();
         tasks.add(task);
         ui.showTaskAdded(task, tasks.size());
-        storage.saveTasks(tasks.tasks());
+        storage.saveTasks(tasks.getTasks());
     }
 
+    /**
+     * Creates a task based on the task type and user arguments.
+     *
+     * @return the created task
+     * @throws TonyException if the task format is invalid
+     */
     private Task createTask() throws TonyException {
         switch (taskType) {
         case "todo":
@@ -49,7 +73,7 @@ public class AddCommand extends Command {
                 LocalDateTime deadline = LocalDateTime.parse(deadlineParts[1].trim(), formatter);
                 return new Deadline(deadlineParts[0].trim(), deadline);
             } catch(DateTimeParseException e) {
-                throw new TonyException("Invalid date/time format! Please enter dd-mm-yyyy HHmm (eg. 17-10-2003 1800");
+                throw new TonyException("Invalid date/time format! Please enter dd-MM-yyyy HHmm (eg. 17-10-2003 1800)");
             }
         case "event":
             String[] firstSplit = arguments.split(" /from ");
@@ -66,6 +90,11 @@ public class AddCommand extends Command {
         }
     }
 
+    /**
+     * Returns whether this command exits the application.
+     *
+     * @return false, since add does not exit the program
+     */
     @Override
     public boolean isExit() {
         return false;
